@@ -13,17 +13,19 @@ $currentTime = date( 'd-m-Y h:i:s A', time () );
 
 if(isset($_POST['submit']))
 {
-	$category=$_POST['category'];
-	$description=$_POST['description'];
-$sql=mysqli_query($con,"insert into category(categoryName,categoryDescription) values('$category','$description')");
+	
+	$name=$_POST['companyname'];
+	$loc=$_POST['location'];
+	$phone=$_POST['phonenumber'];
+$sql=mysqli_query($con,"insert into supplier(companyName,location,phoneNumber) values('$name','$loc','$phone')");
 $_SESSION['msg']="Category Created !!";
 
 }
 
 if(isset($_GET['del']))
 		  {
-		          mysqli_query($con,"delete from category where id = '".$_GET['id']."'");
-                  $_SESSION['delmsg']="Category deleted !!";
+		          mysqli_query($con,"delete from supplier where id = '".$_GET['id']."'");
+                  $_SESSION['delmsg']="Supplier Details deleted !!";
 		  }
 
 ?>
@@ -32,7 +34,7 @@ if(isset($_GET['del']))
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Admin| Category</title>
+	<title>Admin| Supplier</title>
 	<link type="text/css" href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link type="text/css" href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link type="text/css" href="css/theme.css" rel="stylesheet">
@@ -51,14 +53,14 @@ if(isset($_GET['del']))
 
 						<div class="module">
 							<div class="module-head">
-								<h3>Category</h3>
+								<h3>Supplier Details</h3>
 							</div>
 							<div class="module-body">
 
 									<?php if(isset($_POST['submit']))
 {?>
 									<div class="alert alert-success">
-										<button type="button" class="close" data-dismiss="alert">×</button>
+										<button type="bidco" class="close" data-dismiss="alert">×</button>
 									<strong>Well done!</strong>	<?php echo htmlentities($_SESSION['msg']);?><?php echo htmlentities($_SESSION['msg']="");?>
 									</div>
 <?php } ?>
@@ -68,34 +70,46 @@ if(isset($_GET['del']))
 {?>
 									<div class="alert alert-error">
 										<button type="button" class="close" data-dismiss="alert">×</button>
-									<strong>Oh snap!</strong> 	<?php echo htmlentities($_SESSION['delmsg']);?><?php echo htmlentities($_SESSION['delmsg']="");?>
+									<?php echo htmlentities($_SESSION['delmsg']);?><?php echo htmlentities($_SESSION['delmsg']="");?>
 									</div>
 <?php } ?>
 
 									<br />
 
-			<form class="form-horizontal row-fluid" name="Category" method="post" >
+			<form class="form-horizontal row-fluid" name="Supplier" method="post">
 									
+
 <div class="control-group">
-<label class="control-label" for="basicinput">Category Name</label>
+<label class="control-label" for="basicinput">Company Name</label>
 <div class="controls">
-<input type="text" placeholder="Enter category Name"  name="category" class="span8 tip" required>
+<input type="text" placeholder="Enter Company Name"  name="companyname" class="span8 tip" required>
 </div>
 </div>
 
 
 <div class="control-group">
-											<label class="control-label" for="basicinput">Description</label>
-											<div class="controls">
-												<textarea class="span8" name="description" rows="5"></textarea>
-											</div>
-										</div>
+<label class="control-label" for="basicinput">Location</label>
+<div class="controls">
+<input type="text" placeholder="Enter Company Location"  name="location" class="span8 tip" required>
+</div>
+</div>
 
-	<div class="control-group">
-											<div class="controls">
-												<button type="submit" name="submit" class="btn">Create</button>
-											</div>
-										</div>
+
+<div class="control-group">
+<label class="control-label" for="basicinput">Phone Number</label>
+<div class="controls">
+<input type="text" placeholder="Enter Company Phone Number"  name="phonenumber" class="span8 tip" required>
+</div>
+</div>
+
+
+<hr>
+			<p align="center">
+			<button type="submit" name="submit" class="btn">Create</button>
+
+			<button type="reset" class="btn btn-danger"><i class="fa fa-times fa-fw"></i>Reset</button> 
+			 
+		</p>
 									</form>
 							</div>
 						</div>
@@ -103,36 +117,34 @@ if(isset($_GET['del']))
 
 	<div class="module">
 							<div class="module-head">
-								<h3>Manage Categories</h3>
+								<h3>Manage Supplier Details</h3>
 							</div>
 							<div class="module-body table">
 								<table cellpadding="0" cellspacing="0" border="0" class="datatable-1 table table-bordered table-striped	 display" width="100%">
 									<thead>
 										<tr>
-											<th>#</th>
-											<th>Category</th>
-											<th>Description</th>
-											<th>Creation date</th>
-											<th>Last Updated</th>
+											<th>Supplier ID</th>
+											<th>Company Name</th>
+											<th>Location</th>
+											<th>Phone Number</th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
 
-<?php $query=mysqli_query($con,"select * from category");
+<?php $query=mysqli_query($con,"select * from supplier");
 $cnt=1;
 while($row=mysqli_fetch_array($query))
 {
 ?>									
 										<tr>
-											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($row['categoryName']);?></td>
-											<td><?php echo htmlentities($row['categoryDescription']);?></td>
-											<td> <?php echo htmlentities($row['creationDate']);?></td>
-											<td><?php echo htmlentities($row['updationDate']);?></td>
+										<td><?php echo htmlentities($cnt);?></td>
+											<td><?php echo htmlentities($row['companyName']);?></td>
+											<td><?php echo htmlentities($row['location']);?></td>
+											<td> <?php echo htmlentities($row['phoneNumber']);?></td>
 											<td>
-											<a href="edit-category.php?id=<?php echo $row['id']?>" ><i class="icon-edit"></i></a>
-											<a href="category.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')"><i class="icon-remove-sign"></i></a></td>
+											<a href="edit-supplier.php?id=<?php echo $row['id']?>" ><i class="icon-edit"></i></a>
+											<a href="supplier.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')"><i class="icon-remove-sign"></i></a></td>
 										</tr>
 										<?php $cnt=$cnt+1; } ?>
 										
